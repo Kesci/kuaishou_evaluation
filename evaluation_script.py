@@ -87,3 +87,5 @@ if __name__ == '__main__':
     test_file = sys.argv[2]
     print (validate(submit_file, test_file))
     print (score(submit_file, test_file))
+
+
