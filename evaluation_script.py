@@ -27,8 +27,9 @@ def scoreAUC(labels, probs):
     auc = auc_temp / (TP * FP)
     return auc
 
-def validate(submit_file, test_file, options = True):
 
+def validate(submit_file, test_file, options = True):
+    
     lines = open(test_file).readlines()
     data = []
     for line in lines:
@@ -36,20 +37,25 @@ def validate(submit_file, test_file, options = True):
         data.append(s[0] + '_' + s[1])
         #data[s[1] + '_' + s[2]] = int(s[0])
 
+    prob_inrange = True
     lines = open(submit_file).readlines()
     submit_data = []
     for line in lines:
         s = line.strip('\n').split('\t')
         submit_data.append(s[0] + '_' + s[1])
-    
+        # print (float(s[2]))
+        if not (0 <= float(s[2]) <= 1):
+            prob_inrange = False
+
     data.sort()
     submit_data.sort()
 
-    if data == submit_data and len(data) == len(submit_data):
+    if data == submit_data and len(data) == len(submit_data) and prob_inrange:
 
         return {'code': 0, 'message': 'validation success'}
     else:
         return {'code': -1, 'message': 'validation fail'}
+
 
 def score(submit_file, test_file, options = True):
 
@@ -80,12 +86,12 @@ def score(submit_file, test_file, options = True):
         'message': 'success'
         }
 
-if __name__ == '__main__':
-    if len(sys.argv) != 3:
-        print ('usage: python score.py submit_file test_file')
-    submit_file = sys.argv[1]
-    test_file = sys.argv[2]
-    print (validate(submit_file, test_file))
-    print (score(submit_file, test_file))
+# if __name__ == '__main__':
+#     if len(sys.argv) != 3:
+#         print ('usage: python score.py test_file submit_file')
+#     test_file = sys.argv[1]
+#     submit_file = sys.argv[2]
+#     print (validate(submit_file, test_file))
+#     print (score(submit_file, test_file))
 
 
